@@ -1,64 +1,95 @@
-import Head from 'next/head';
-import { useState } from 'react';
-import { GetStaticProps } from 'next';
-import { Book }  from '../models/book';
-import Navbar from '../components/Navbar';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
-interface HomeProps {
-  books: Book[];
+interface Book {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
 }
 
-export default function Home({ books }: HomeProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+const BookList = () => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
-  // filter books based on search term
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("/api/books");
+      setBooks(response.data);
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan saat mengambil data");
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (window.confirm("Anda yakin ingin menghapus data ini?")) {
+      try {
+        await axios.delete(`/api/books?id=${id}`);
+        alert("Data berhasil dihapus!");
+        fetchBooks();
+      } catch (error) {
+        console.error(error);
+        alert("Terjadi kesalahan saat menghapus data");
+      }
+    }
+  };
+
+  const handleEdit = (id: number) => {
+    router.push(`/edit/${id}`);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div>
-      <Head>
-        <title>My Bookshelf</title>
-        <meta name="description" content="A simple bookshelf app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Navbar />
-
-      <main className="container mx-auto py-4">
-        <h1 className="text-4xl font-bold mb-4">My Bookshelf</h1>
-
-        {/* Search Bar */}
+    <div className="container mx-auto p-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-semibold">Daftar Buku</h1>
         <input
           type="text"
-          placeholder="Search by Title"
-          className="border p-2 rounded-md mb-4"
+          placeholder="Cari judul buku"
+          className="border rounded-md px-4 py-2 w-1/4"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearch}
         />
-
-        {/* Books Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredBooks.map((book) => (
-            <div key={book.id} className="bg-white rounded-md p-4">
-              <img src={book.image} alt={book.title} className="mb-2" />
-              <h2 className="text-lg font-semibold mb-2">{book.title}</h2>
-              <p className="text-gray-600">{book.description}</p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredBooks.map((book) => (
+          <div key={book.id} className="bg-white rounded-md p-4">
+            <img src={book.image} alt={book.title} className="mb-2" />
+            <h2 className="text-lg font-semibold mb-2">{book.title}</h2>
+            <p className="text-gray-600">{book.description}</p>
+            <div className="flex justify-end mt-4">
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mr-2"
+                onClick={() => handleEdit(book.id)}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                onClick={() => handleDelete(book.id)}
+              >
+                Delete
+              </button>
             </div>
-          ))}
-        </div>
-      </main>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
-
-// fetch data from API
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/books');
-  const books: Book[] = await res.json();
-
-  return {
-    props: { books },
-  };
 };
+
+export default BookList;

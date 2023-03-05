@@ -10,9 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await createBook(book);
     res.status(201).json("Data created successfully");
   } else if (req.method === 'PUT') {
-    const book = req.body as Book;
+    const books = req.body as Book;
     const { id } = req.query;
-    await updateBook(Number(id), book);
+    await updateBook(Number(id), books);
     res.status(200).json("Data updated successfully");
   } else if (req.method === 'DELETE') {
     const { id } = req.query;
