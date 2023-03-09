@@ -11,7 +11,7 @@ export default async function handler(
     return;
   }
 
-  const { username, password } = req.body;
+  const { username, password, isadmin } = req.body;
 
   const hashedPassword = await hash(password, 10);
 
@@ -19,8 +19,8 @@ export default async function handler(
     const conn = await pool.getConnection();
 
     const result = await conn.query(
-      "INSERT INTO users (username, password) VALUES (?, ?)",
-      [username, hashedPassword]
+      "INSERT INTO users (username, password, isadmin) VALUES (?, ?, ?)",
+      [username, hashedPassword, isadmin]
     );
 
     conn.release();

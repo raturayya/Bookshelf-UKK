@@ -8,7 +8,7 @@ const RegisterForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    isAdmin: false
+    isadmin: false
   });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -75,7 +75,7 @@ const RegisterForm = () => {
             name="isAdmin"
             id="isAdmin"
             className="mr-2 rounded-full focus:outline-none focus:shadow-outline-blue"
-            checked={formData.isAdmin}
+            checked={formData.isadmin}
             onChange={handleCheckboxChange}
           />
           <span className="text-gray-700">Register as admin</span>

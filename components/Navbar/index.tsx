@@ -1,15 +1,28 @@
-import Link from 'next/link';
+// components/Navbar.tsx
+
+import Link from 'next/link'
 
 export default function Navbar() {
   return (
-    <nav className="bg-gray-800 text-white py-4">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <Link href="/edit">
-          <p className="text-2xl font-bold">My Bookshelf</p>
-        </Link>
-        <Link href="/add">
-          <p className="bg-blue-600 py-2 px-4 rounded-md text-white">Add Book</p>
-        </Link>
+    <nav className="flex justify-between items-center py-4 mx-16">
+      <div className="text-2xl font-bold ">myBookshelf</div>
+      <div className="flex space-x-4">
+      <button className='h-auto w-auto  p-2 rounded-lg'>
+          <Link href="/">
+            <p className="text-gray-500 hover:text-gray-700 ">Tambah Buku</p>
+          </Link>
+        </button>
+        <button className='h-auto w-20 bg-yellow-300 p-2 rounded-lg'>
+          <Link href="/">
+            <p className="text-white font-medium">Login</p>
+          </Link>
+        </button>
+        <button className='h-auto w-auto  border-2 border-yellow-300 p-2 rounded-lg'>
+          <Link href="/">
+            <p className="text-gray-500 hover:text-gray-700 ">Register</p>
+          </Link>
+        </button>
       </div>
     </nav>
-)}
+  )
+}
