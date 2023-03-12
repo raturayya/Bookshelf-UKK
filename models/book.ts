@@ -2,7 +2,7 @@ import { pool } from '../lib/db';
 
 export interface Book {
   id: number;
-  image: string;
+  image?: string;
   title: string;
   description: string;
 }

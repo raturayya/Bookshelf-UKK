@@ -15,7 +15,7 @@ const Login = () => {
     try {
       const response = await axios.post("/api/auth/login", { username, password });
       if (response.status === 200) {
-        router.push("/");
+        router.push("/booklist");
       }
     } catch (error) {
       setErrorMessage("Salah");

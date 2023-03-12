@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface BookForm {
   image: string;
@@ -43,9 +44,14 @@ const AddBook = () => {
             type="file"
             id="image"
             name="image"
-            value={book.image}
-            onChange={handleInputChange}
-            className="p-2 rounded-md border-gray-300 focus:outline-none focus:border-blue-600"
+            onChange={(event) => {
+              const file = event.target.files && event.target.files[0];
+              if (file) {
+                setBook({ ...book, image: file.name });
+              }
+              handleInputChange(event);
+            }}
+            className="p-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-600"
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -58,7 +64,7 @@ const AddBook = () => {
             name="title"
             value={book.title}
             onChange={handleInputChange}
-            className="p-2 rounded-md border-gray-300 focus:outline-none focus:border-blue-600"
+            className="p-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-600"
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -70,12 +76,17 @@ const AddBook = () => {
             name="description"
             value={book.description}
             onChange={handleInputChange}
-            className="p-2 rounded-md border-gray-300 focus:outline-none focus:border-blue-600"
+            className="p-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-600"
           />
         </div>
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
           Tambah Data
-        </button>
+        </button>        
+        <Link href="/">
+          <button className="border border-blue-500 py-2 px-4 rounded-md w-full">
+            Batal
+          </button>
+        </Link>
       </form>
     </div>
   );
