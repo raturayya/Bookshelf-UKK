@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar2";
 
 interface Book {
   id: number;
-  image?: string
+  image: string;
   title: string;
   description: string;
 }
@@ -66,13 +66,13 @@ const BookList = () => {
           onChange={handleSearch}
         />
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-16">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-16 mb-16">
         {filteredBooks.map((book) => (
         <div key={book.id} className="bg-white rounded-md p-4 border border-blue-500">
           {book.image && (
             <img src={book.image} alt={book.title} />
           )}
-          <h2 className="text-lg font-semibold mb-2">{book.title}</h2>
+          <h2 className="text-lg font-semibold mb-2 mt-4">{book.title}</h2>
           <p className="text-gray-600" style={{overflowWrap: 'break-word'}}>{book.description}</p>
           <div className="flex justify-end mt-4">
             <button

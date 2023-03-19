@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import router from 'next/router';
 
 interface BookForm {
   image: string;
@@ -21,6 +22,7 @@ const AddBook = () => {
       await axios.post('/api/books', book);
       alert('Data berhasil ditambahkan!');
       setBook({ image: '', title: '', description: '' });
+      router.push("/booklist");
     } catch (error) {
       console.error(error);
       alert('Terjadi kesalahan saat menambahkan data');
@@ -35,13 +37,13 @@ const AddBook = () => {
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-semibold mb-8">Tambah Data Buku</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" encType='multipart/form-data'>
         <div className="flex flex-col gap-2">
           <label htmlFor="image" className="text-lg font-semibold">
             Gambar
           </label>
           <input
-            type="file"
+            type="link"
             id="image"
             name="image"
             onChange={(event) => {
@@ -82,7 +84,7 @@ const AddBook = () => {
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
           Tambah Data
         </button>        
-        <Link href="/">
+        <Link href="/booklist">
           <button className="border border-blue-500 py-2 px-4 rounded-md w-full">
             Batal
           </button>

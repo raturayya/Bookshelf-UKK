@@ -48,7 +48,7 @@ const EditBook = () => {
     try {
       await axios.put(`/api/books?id=${id}`, searchParams);
       alert("Data berhasil diubah!");
-      router.push("/");
+      router.push("/booklist");
     } catch (error) {
       console.error(error);
       alert("Terjadi kesalahan saat menyimpan data");
@@ -71,7 +71,7 @@ const EditBook = () => {
         <div className="mb-4">
           <label className="block font-semibold mb-2">Gambar</label>
           <input
-            type="file"
+            type="text"
             name="image"
             defaultValue={books.image}
             className="border rounded-md px-4 py-2 w-full"
